@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/bg.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/bgw.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/mur.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/particules/dust/tile000.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/particules/dust/tile001.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/particules/dust/tile002.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/particules/dust/tile003.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/particules/dust/tile004.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/particules/dust/tile005.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/doubleump/tile000.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/doubleump/tile001.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/doubleump/tile002.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/doubleump/tile003.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/doubleump/tile004.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/falling/tile000.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/jump/tile000.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/jump/tile001.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/static/tile000.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile000.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile001.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile002.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile003.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile004.png</File>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile005.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
