@@ -42,14 +42,20 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Directions.cs" />
+    <Compile Include="Model\StaticEffectName.cs" />
+    <Compile Include="Sprites\FinishedAnimation.cs" />
+    <Compile Include="Sprites\NullAnimatedSprite.cs" />
+    <Compile Include="Model\ParticuleAnimationName.cs" />
+    <Compile Include="Model\PlayerAnimationName.cs" />
+    <Compile Include="Model\Directions.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Model\SpriteTypes.cs" />
     <Compile Include="PlateformerSprite.cs" />
-    <Compile Include="Ligne.cs" />
-    <Compile Include="Sprites\main_character.cs" />
+    <Compile Include="Sprites\AnimatedSprite.cs" />
+    <Compile Include="Sprites\MainCharacter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sprites\AnimatedSprite.cs" />
+    <Compile Include="Sprites\SpriteManager.cs" />
     <Compile Include="Sprites\Sprite.cs" />
   </ItemGroup>
   <ItemGroup>

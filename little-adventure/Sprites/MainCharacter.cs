@@ -10,15 +10,9 @@ using System.Diagnostics;
 using little_adventure.Sprites;
 using Microsoft.Xna.Framework.Content;
 using tainicom.Aether.Physics2D.Dynamics;
+using little_adventure.Model;
 
-namespace little_adventure {
-
-    public static class Define {
-        public const byte ParameterNumber = 2;
-        public const byte MovementTextuePosition = 0;
-        public const byte StaticTexturePosition = 1;
-    }
-    
+namespace little_adventure.Sprites {   
 
 
     class MainCharacter {
@@ -41,7 +35,7 @@ namespace little_adventure {
         /// <param name="initial_position"> Initial position of this sprite</param>
         public MainCharacter(Vector2 initial_position) {
             
-            //this._spriteManager.inflation = 1f;
+
             this._velocity = new Vector2(0, 0);
             this._positions = initial_position;
             this._actualDirection = Directions.NONE;
@@ -60,22 +54,21 @@ namespace little_adventure {
 
             this._spriteManager = new SpriteManager(graphicsDevice);
 
-            this._spriteManager.addTexture(content, "static", path+"/static/");
+            this._spriteManager.addAnimation(PlayerAnimationName.STATIC, content, path + "/static/");
 
-            this._spriteManager.addTexture(content, "walk", path + "/walk/");
+            this._spriteManager.addAnimation(PlayerAnimationName.WALK, content, path + "/walk/");
 
-            this._spriteManager.addParticule(content, "dust", "./particules/dust/");
+            this._spriteManager.addAnimation(PlayerAnimationName.JUMP, content, path + "/jump/");
 
-            this._spriteManager.addTexture(content, "jump", path + "/jump/");
+            this._spriteManager.addAnimation(PlayerAnimationName.FALL, content, path + "/falling/");
 
-            this._spriteManager.addTexture(content, "fall", path + "/falling/");
+            this._spriteManager.addAnimation(ParticuleAnimationName.WALK, content, "./particules/dust/");
 
-            this._spriteManager.addStaticEffect(content, "dump", path + "/doubleump/");
+            this._spriteManager.addStaticAnimation(StaticEffectName.DOUBLEJUMP, content, path + "/doubleump/");
 
-            this._spriteManager.setActualTexture("static");
-            this._spriteManager.setActualPaticule("none");
-            this._spriteManager.setActualStaticEffect("none");
-            this._spriteManager.nextSprite();
+            this._spriteManager.setActualTexture(PlayerAnimationName.STATIC);
+            this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
+            this._spriteManager.setActualTexture(StaticEffectName.NONE, Vector2.Zero);
 
         }
 
@@ -114,7 +107,7 @@ namespace little_adventure {
         /// <param name="lv">niveau actuel</param>
         private void collisionManager(PlateformerSprite lv) {
 
-            Sprite newSprite = this._spriteManager.NextSprite;
+            Sprite newSprite = this._spriteManager.NextSprite();
             newSprite.Velocity = this._velocity;
 
             var bot = lv.collisionBot(newSprite);
@@ -165,8 +158,7 @@ namespace little_adventure {
                 this._isDoubleJumping = true;
                 this._positions.Y -= 20f;
                 this._actualDirection = Directions.JUMP;
-                this._spriteManager.setActualStaticEffect("dump");
-                this._spriteManager.staticEffectPosition = this._positions;
+                this._spriteManager.setActualTexture(StaticEffectName.DOUBLEJUMP, this._positions);
                 return;
             }
 
@@ -179,7 +171,7 @@ namespace little_adventure {
             else if (state.IsKeyDown(Keys.Right)) { // déplacement à droite
                 this._velocity.X = 3;
                 this._spriteManager.effect = SpriteEffects.None;
-                this._actualDirection = Directions.RIGTH;
+                this._actualDirection = Directions.RIGHT;
             }
             else { //aucune touche
                 this._actualDirection = Directions.NONE;
@@ -198,31 +190,31 @@ namespace little_adventure {
             //gestion de l'animation
 
             if (this._actualDirection == Directions.JUMP) { //
-                this._spriteManager.setActualPaticule("none");
-                this._spriteManager.setActualTexture("jump");
+                this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
+                this._spriteManager.setActualTexture(PlayerAnimationName.JUMP);
             }
             else if (this._isJumping)
                 return;
             else if(this._actualDirection == Directions.FALL) {
-                this._spriteManager.setActualPaticule("none");
-                this._spriteManager.setActualTexture("fall");
+                this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
+                this._spriteManager.setActualTexture(PlayerAnimationName.FALL);
             }
-            else if ((lastDirection == Directions.LEFT && this._actualDirection == Directions.RIGTH) ||
-                (lastDirection == Directions.RIGTH && this._actualDirection == Directions.LEFT) ||
-                (this._actualDirection == Directions.RIGTH && this._wasFalling) ||
+            else if ((lastDirection == Directions.LEFT && this._actualDirection == Directions.RIGHT) ||
+                (lastDirection == Directions.RIGHT && this._actualDirection == Directions.LEFT) ||
+                (this._actualDirection == Directions.RIGHT && this._wasFalling) ||
                 (this._actualDirection == Directions.LEFT && this._wasFalling)) {
-                this._spriteManager.setActualPaticule("dust");
-                this._spriteManager.setActualTexture("walk");
+                this._spriteManager.setActualTexture(ParticuleAnimationName.WALK);
+                this._spriteManager.setActualTexture(PlayerAnimationName.WALK);
             }
             else if (this._actualDirection == Directions.NONE) {
-                this._spriteManager.setActualTexture("static");
-                this._spriteManager.setActualPaticule("none");
+                this._spriteManager.setActualTexture(PlayerAnimationName.STATIC);
+                this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
             }
-            else if ((this._actualDirection == Directions.LEFT || this._actualDirection == Directions.RIGTH)
+            else if ((this._actualDirection == Directions.LEFT || this._actualDirection == Directions.RIGHT)
                 && lastDirection == Directions.NONE) {
-
-                this._spriteManager.setActualPaticule("dust");
-                this._spriteManager.setActualTexture("walk");
+                
+                this._spriteManager.setActualTexture(PlayerAnimationName.WALK);
+                this._spriteManager.setActualTexture(ParticuleAnimationName.WALK);
             }
         }
 

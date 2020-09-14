@@ -1,4 +1,4 @@
-﻿using little_adventure.Sprites;
+﻿using little_adventure.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,249 +9,95 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace little_adventure {
+namespace little_adventure.Sprites {
+
+    
 
 
-    class SpriteManager{
+    class AnimatedSprite {
 
-        private Dictionary<String, List<Sprite>> _sprites;
-        private Sprite _nextSprite;
-        private String _actualTexture;
-        private int _animationCounter;
-        private int _animationModuler;
+        protected int _moduler;
+        protected int _counter;
+        protected int _fpsModuler;
+        protected List<Sprite> _sprites;
+        public Vector2 _positions;
+        protected Sprite _nextSprite;
+        private bool _manualAnimation;
+        protected bool _isStatic;
 
-        private Dictionary<String, List<Sprite>> _particules;
-        private Sprite _nextParticule;
-        private String _actualParticule;
-        private int _particuleCounter;
-        private int _particuleModuler;
-
-        private Dictionary<String, List<Sprite>> _staticEffect;
-        private Sprite _nextStaticEffect;
-        private String _actualStaticEffect;
-        private int _staticEffectCounter;
-        private int _staticEffectModuler;
-        public Vector2 staticEffectPosition;
-
-
-
-
-
-
-        private int n;
-        public Vector2 Position;
-        public SpriteEffects effect;
-
-
-        public int Height { get {
-                return this._nextSprite.Rectangle.Height;
-            }
-        }
-        public int Width { get {
-                return this._nextSprite.Rectangle.Width;
-            } }
+        public Sprite Sprite { get { return _nextSprite; } }
         
-        public Sprite NextSprite {
-            get { return this._nextSprite.Clone(); }
-        }
-
+        public bool ManualAnimation { set { _manualAnimation = value; } }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="content">content manager for sprite loading</param>
-        public SpriteManager(GraphicsDevice graphicsDevice){
-
-            this._sprites = new Dictionary<string, List<Sprite>>();
-            this._particules = new Dictionary<string, List<Sprite>>();
-            this._staticEffect = new Dictionary<string, List<Sprite>>();
-
-            Texture2D t = new Texture2D(graphicsDevice, 1, 1);
-            List<Sprite> l = new List<Sprite>();
-            l.Add(new Sprite(t));
-
-            this._particules.Add("none", l);
-            this._sprites.Add("none", l);
-            this._staticEffect.Add("none", l);
-
-
-            //this._content = content;
-
-            this._animationCounter = 0;
-            this._animationModuler = 0;
-
-            this._particuleCounter = 0;
-            this._particuleModuler = 0;
-
-            this._staticEffectCounter = 0;
-            this._staticEffectModuler = 0;
-
-            n = 0;
-
-        }
-
-
-        /// <summary>
-        /// Load multiple texture to make a animation
-        /// </summary>
-        /// <param name="animationName"></param>
-        /// <param name="animationPath"></param>
-        public void addTexture(ContentManager content, String animationName, String animationPath) {
-
-            List<Sprite> sps = new List<Sprite>();
-            Texture2D tx;
-
-            int textureCount = System.IO.Directory.GetFiles(content.RootDirectory + animationPath).Length;
-
-            for(int i=0; i<textureCount; i++) {
-                tx = content.Load<Texture2D>(animationPath+"tile" + i.ToString("000"));
-                sps.Add(new Sprite(tx));
-            }
-
-            this._sprites.Add(animationName, sps);
-
+        public AnimatedSprite() {
+            this._fpsModuler = 2;
+            this._moduler = 1;
+            this._counter = 0;
+            this._sprites = new List<Sprite>();
+            this._positions = Vector2.Zero;
+            this._manualAnimation = false;
+            this._isStatic = false;
         }
 
         /// <summary>
-        /// Load multiple particule sprite to male a animation
+        /// Crée la liste des sprite qui compose l'animation
         /// </summary>
-        /// <param name="animationName"></param>
-        /// <param name="animationPath"></param>
-        public void addParticule(ContentManager content, String animationName, String animationPath) {
-
-            List<Sprite> pts = new List<Sprite>();
+        /// <param name="path"> chemin du dossier qui contient les sprites</param>
+        /// <param name="content"> gestionnaire des content du gens</param>
+        public void loadContent(String path, ContentManager content) {
+            
             Texture2D tx;
 
-            int textureCount = System.IO.Directory.GetFiles(content.RootDirectory + animationPath).Length;
+            int textureCount = System.IO.Directory.GetFiles(content.RootDirectory + path).Length;
 
             for (int i = 0; i < textureCount; i++) {
-                tx = content.Load<Texture2D>(animationPath + "tile" + i.ToString("000"));
-                pts.Add(new Sprite(tx));
+                tx = content.Load<Texture2D>(path + "tile" + i.ToString("000"));
+                this._sprites.Add(new Sprite(tx));
             }
 
-            this._particules.Add(animationName, pts);
-
+            this._moduler = this._sprites.Count;
+            this._nextSprite = this._sprites[0];
         }
 
-        public void addStaticEffect(ContentManager content, String effectName, String effectPath) {
-
-            List<Sprite> pts = new List<Sprite>();
-            Texture2D tx;
-
-            int textureCount = System.IO.Directory.GetFiles(content.RootDirectory + effectPath).Length;
-
-            for (int i = 0; i < textureCount; i++) {
-                tx = content.Load<Texture2D>(effectPath + "tile" + i.ToString("000"));
-                pts.Add(new Sprite(tx));
-            }
-
-            this._staticEffect.Add(effectName, pts);
+        public void setStaticAnimation(Vector2 position) {
+            this._isStatic = true;
+            this._positions = position;
         }
-
+                
         /// <summary>
-        /// define the texture/animation to draw
+        /// 
         /// </summary>
-        /// <param name="textureName"></param>
-        public void setActualTexture(string textureName) {
-            this._actualTexture = textureName;
-            this._animationCounter = 0;
-            this._animationModuler = this._sprites[textureName].Count;
-            n = 0;
+        /// <param name="position"> position du prochain sprite</param>
+        /// <param name="c">sprite à afficher en mode manuel</param>
+        public virtual void Update(Vector2 position, int c=0) {
+
+            if (this._manualAnimation)
+                this._counter = c*this._fpsModuler;
+            else
+                this._counter = (this._counter + 1) % (this._moduler * this._fpsModuler);
+            
+
+            this._nextSprite = this._sprites[this._counter / this._fpsModuler];
+
+            if(!this._isStatic)
+                this._positions = position;
+
+            this._nextSprite.Position = this._positions;
             
         }
-
+        
         /// <summary>
-        /// define the particule/animation to draw
-        /// </summary>
-        /// <param name="particuleName"></param>
-        public void setActualPaticule(string particuleName) {
-            this._actualParticule = particuleName;
-            this._particuleCounter = 0;
-            this._particuleModuler = this._particules[particuleName].Count;
-        }
-
-        public void setActualStaticEffect(string staticEffectName) {
-            this._actualStaticEffect = staticEffectName;
-            this._staticEffectCounter = 0;
-            this._staticEffectModuler = this._staticEffect[staticEffectName].Count;
-        }
-
-
-        /// <summary>
-        /// calculate the next texture to draw in functions of the animation position and the animation to draw
-        /// </summary>
-        /// <returns>next texture to print</returns>
-        public void nextSprite() {
-
-            n++;
-            
-            if(this._actualTexture == "jump" && n<34) {
-                this._animationCounter = 0;
-            } else if(this._actualTexture == "jump" && n >= 34){
-                this._animationCounter =2;
-            }
-
-            this._animationCounter = (this._animationCounter + 1) % (this._animationModuler * 2);
-            
-            this._nextSprite = this._sprites[this._actualTexture][this._animationCounter/2];
-        }
-
-        /// <summary>
-        /// calculate the next particule texture to draw in functions of the animation position and the animation to draw
-        /// </summary>
-        /// <returns>next particule texture to print</returns>
-        public void nextParticule() {
-            
-            this._particuleCounter = (this._particuleCounter + 1) % (this._particuleModuler * 2);
-
-            this._nextParticule = this._particules[this._actualParticule][this._particuleCounter / 2];
-        }
-
-        public void nextStaticEffect() {
-
-            this._staticEffectCounter = (this._staticEffectCounter + 1) % (this._staticEffectModuler * 2);
-
-            this._nextStaticEffect = this._staticEffect[this._actualStaticEffect][this._staticEffectCounter / 2];
-
-            if (this._nextStaticEffect == this._staticEffect[this._actualStaticEffect].Last())
-                this.setActualStaticEffect("none");
-
-        }
-
-        /// <summary>
-        /// Actualise les sprites à afficher
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime) {
-            this.nextParticule();
-            this.nextSprite();
-            this.nextStaticEffect();
-
-            this._nextParticule.effect=this.effect;
-            this._nextSprite.effect = this.effect;
-
-            this._nextSprite.Position = this.Position;
-            this._nextParticule.Position = this.Position;
-            this._nextStaticEffect.Position = this.staticEffectPosition;
-        }
-
-        /// <summary>
-        /// Actualise les sprites
+        /// Dessine le sprite
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch) {
-
-            
-
+        /// <param name="effect"></param>
+        public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects effect) {
+            this._nextSprite.effect = effect;
             this._nextSprite.Draw(spriteBatch);
-            
-            this._nextParticule.Draw(spriteBatch);
-
-            this._nextStaticEffect.Draw(spriteBatch);
-                
         }
-
-            
+        
     }
 }
-

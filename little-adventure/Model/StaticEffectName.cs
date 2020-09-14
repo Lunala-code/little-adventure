@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace little_adventure {
-    enum Directions {
-        NONE,
-        LEFT,
-        RIGTH,
-        JUMP,
-        FALL
+namespace little_adventure.Model {
+    enum StaticEffectName {
+        DOUBLEJUMP,
+        NONE
     }
 }
