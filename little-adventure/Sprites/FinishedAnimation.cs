@@ -13,11 +13,17 @@ namespace little_adventure.Sprites {
 
         private bool _isRunning = false;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public FinishedAnimation(): base() {
         }
 
         
-
+        /// <summary>
+        /// Start the animation computing
+        /// </summary>
+        /// <param name="position"> position of sprite</param>
         public void start(Vector2 position) {
             this._isRunning = true;
             this._counter = 0;
@@ -25,9 +31,11 @@ namespace little_adventure.Sprites {
             Debug.WriteLine(this._positions);
         }
 
+        /// <summary>
+        /// If animation is running, compute the next sprite to draw
+        /// </summary>
         public virtual void Update() {
             this._counter++;
-            Debug.WriteLine(this._counter/this._fpsModuler);
             this._isRunning = !(this._counter/this._fpsModuler >= this._sprites.Count);
 
             if (this._isRunning) {
@@ -38,10 +46,13 @@ namespace little_adventure.Sprites {
                 return;
         }
 
+        /// <summary>
+        /// Drawing sprite
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="effect"></param>
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects effect) {
-
             
-
             if (this._isRunning)
                 base.Draw(spriteBatch, effect);
             else

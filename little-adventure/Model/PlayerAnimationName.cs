@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace little_adventure.Model {
 
-    
-
+    /// <summary>
+    /// All animations state for player
+    /// </summary>
     enum PlayerAnimationName {
         NONE,
         STATIC,

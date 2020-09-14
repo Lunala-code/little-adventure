@@ -23,10 +23,7 @@ namespace little_adventure {
         private AnimatedSprite _actualPlayerSprite;
         private AnimatedSprite _actualParticuleSprite;
         private FinishedAnimation _actualStaticSprite;
-
-        private bool _isStatic=false;
         
-        public Vector2 staticEffectPosition;
 
         private int n;
         private bool _isJumping;
@@ -121,13 +118,7 @@ namespace little_adventure {
                 j = 0;
             else if (this._isJumping)
                 j = 1;
-
-            
-            if (this._isStatic) {
-                
-                this._actualParticuleSprite.Update(this.staticEffectPosition);
-            }
-                
+    
             else
                 this._actualParticuleSprite.Update(this.Position);
             this._actualPlayerSprite.Update(this.Position, j);
