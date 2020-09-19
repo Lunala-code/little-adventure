@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/falling/tile000.png</SourceFile>
-  <SourceTime>2020-09-08T17:37:55.3212749+02:00</SourceTime>
+  <SourceTime>2020-09-14T16:18:00.5974615+02:00</SourceTime>
   <DestFile>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/bin/DesktopGL/pinkCharacter/falling/tile000.xnb</DestFile>
-  <DestTime>2020-09-13T11:07:21.6304465+02:00</DestTime>
+  <DestTime>2020-09-15T10:50:05.2636398+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2019-10-15T21:28:30+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

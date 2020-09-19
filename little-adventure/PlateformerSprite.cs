@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using little_adventure.Sprites;
+using little_adventure.Physics;
 
 namespace little_adventure {
 
@@ -15,7 +16,7 @@ namespace little_adventure {
 
         private string _texturePath;
         private Texture2D platform;
-        public List<Sprite> collisionMap;
+        public List<Body> collisionMap;
         private int _width;
         private int _height;
         public int Width { get => _width; }
@@ -44,7 +45,7 @@ namespace little_adventure {
             this.tileCountWith = this._width / this.tileWidth;
 
 
-            this.collisionMap = new List<Sprite>();
+            this.collisionMap = new List<Body>();
             
         }
 
@@ -62,8 +63,8 @@ namespace little_adventure {
         /// <param name="graphicsDevice"></param>
         public void getColisionMap(GraphicsDevice graphicsDevice) {
 
-            this.collisionMap = new List<Sprite>();
-            Sprite s;
+            this.collisionMap = new List<Body>();
+            Body b;
 
             Rectangle r = new Rectangle(0, 0, 32, 32);
             Color[] buffer = new Color[32 * 32];
@@ -75,10 +76,8 @@ namespace little_adventure {
                     this.platform.GetData(0, r, buffer, 0, 32 * 32);
 
                     if (!buffer.All(c => c == Color.Transparent)) {
-                        s = new Sprite(new Texture2D(graphicsDevice, 32, 32));
-                        s.Position = new Vector2(r.X, r.Y);
-                        this.collisionMap.Add(s);
-                        Debug.WriteLine(s.Rectangle);
+                        b = new Body(32, 32, new Vector2(r.X, r.Y));
+                        this.collisionMap.Add(b);
                     }
                 }
                 
@@ -86,60 +85,14 @@ namespace little_adventure {
 
         }
 
-        /// <summary>
-        /// Détecte une collision entre une plateform de la carte et le bas du sprite
-        /// </summary>
-        /// <param name="sprite"></param>
-        /// <returns></returns>
-        public bool collisionBot(Sprite sprite) {
-            foreach(var s in this.collisionMap) {
-                if (sprite.IsTouchingTop(s)) {
-                    sprite.Position = new Vector2(sprite.Position.X, s.Position.Y-sprite.Rectangle.Height);
-                    return true;
-                }
-                    
+        public void collision(Body body) {
+            foreach (var b in this.collisionMap) {
+                body.Collision(b);
+
             }
-            return false;
         }
 
-        /// <summary>
-        /// Détecte une collision enter une plateform de la carte et la tête du sprite
-        /// </summary>
-        /// <param name="sprite"></param>
-        /// <returns></returns>
-        public bool collisionTop(Sprite sprite) {
-            foreach (var s in this.collisionMap) {
-                if (sprite.IsTouchingBottom(s))
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Détecte une collision enter une plateform de la carte et le coté gauche du sprite
-        /// </summary>
-        /// <param name="sprite"></param>
-        /// <returns></returns>
-        public bool collisionLeft(Sprite sprite) {
-            foreach (var s in this.collisionMap) {
-                if (sprite.IsTouchingRight(s))
-                    return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Détecte une collision enter une plateform de la carte et le coté droit du sprite
-        /// </summary>
-        /// <param name="sprite"></param>
-        /// <returns></returns>
-        public bool collisionRight(Sprite sprite) {
-            foreach (var s in this.collisionMap) {
-                if (sprite.IsTouchingLeft(s))
-                    return true;
-            }
-            return false;
-        }
+        
 
 
 

@@ -9,8 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using little_adventure.Sprites;
 using Microsoft.Xna.Framework.Content;
-using tainicom.Aether.Physics2D.Dynamics;
 using little_adventure.Model;
+using little_adventure.Physics;
 
 namespace little_adventure.Sprites {   
 
@@ -27,6 +27,7 @@ namespace little_adventure.Sprites {
         private int _doubleJumpTempo;
         private bool _isFalling;
         private Vector2 gravity;
+        private Body _body;
 
         /// <summary>
         /// Constucte and initialize the class
@@ -70,6 +71,9 @@ namespace little_adventure.Sprites {
             this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
             this._spriteManager.setActualTexture(StaticEffectName.NONE, Vector2.Zero);
 
+            this._body = new Body(this._spriteManager.NextSprite().Rectangle.Height, this._spriteManager.NextSprite().Rectangle.Width, this._positions);
+            this._body.Position = this._positions;
+
         }
 
         /// <summary>
@@ -81,23 +85,31 @@ namespace little_adventure.Sprites {
             var lastDirection = this._actualDirection;
             
             KeyboardGestion();
-            
-            this._velocity.Y += 0.15f;
-            
-            //gestion des collisions
 
+            //this._velocity.Y += 0.15f;
+
+            //this._body.Position = this._positions;
+            //this._body.Velocity = this._velocity;
+
+            //gestion des collisions
+            this._body.Velocity.Y += 0.15f;
+            
             collisionManager(lv);
 
             //gestion de l'animation
             AnimationGestion(lastDirection);
 
+            this._body.Update();
+
             //mise à jour des données
-            this._positions += this._velocity;
-            this._spriteManager.Position = this._positions;
+            //this._positions += this._velocity;
+            this._spriteManager.Position = this._body.Position;
+            //this._positions = this._body.Position;
+            //this._velocity = this._body.Velocity;
 
             this._spriteManager.Update(gameTime);
 
-
+            //Debug.WriteLine(this._actualDirection);
 
         }
 
@@ -107,12 +119,9 @@ namespace little_adventure.Sprites {
         /// <param name="lv">niveau actuel</param>
         private void collisionManager(PlateformerSprite lv) {
 
-            Sprite newSprite = this._spriteManager.NextSprite();
-            newSprite.Velocity = this._velocity;
-
-            var bot = lv.collisionBot(newSprite);
-
-            if (bot) { //collision su les pieds
+            lv.collision(this._body);
+            
+            if (this._body.BotCollision) { //collision su les pieds
                 if (this._isJumping || this._isFalling)
                     this._wasFalling = true;
                 else
@@ -120,21 +129,13 @@ namespace little_adventure.Sprites {
 
                 this._isJumping = false;
                 this._isFalling = false;
-                this._velocity.Y = 0f;
-                this._positions = newSprite.Position;
                 this._doubleJumpTempo = 0;
                 this._isDoubleJumping = false;
             }
-            else if (!bot && !this._isJumping && !this._isDoubleJumping) { //gestion de la chutte
+            else if (!this._body.BotCollision && !this._isJumping && !this._isDoubleJumping) { //gestion de la chutte
                 this._isFalling = true;
                 this._actualDirection = Directions.FALL;
             }
-            if (lv.collisionLeft(newSprite)) // collision à gauche
-                this._velocity.X = 0;
-            if (lv.collisionRight(newSprite)) // collision à doite
-                this._velocity.X = 0;
-            if (lv.collisionTop(newSprite)) // collision à la tête
-                this._velocity.Y = 1;
         }
 
         /// <summary>
@@ -145,37 +146,37 @@ namespace little_adventure.Sprites {
             var state = Keyboard.GetState();
 
             if (state.IsKeyDown(Keys.Space) && !this._isJumping) { //gestion du saut simple
-                this._velocity.Y = -6f;
+                this._body.Velocity.Y = -6f;
                 this._isJumping = true;
-                this._positions.Y -= 20f;
+                this._body.Position.Y -= 20f;
                 this._actualDirection = Directions.JUMP;
                 this._doubleJumpTempo = 0;
                 return;
             }
 
             if (state.IsKeyDown(Keys.Space) && !this._isDoubleJumping && this._doubleJumpTempo > 34) {
-                this._velocity.Y = -6f;
+                this._body.Velocity.Y = -6f;
                 this._isDoubleJumping = true;
-                this._positions.Y -= 20f;
+                this._body.Position.Y -= 20f;
                 this._actualDirection = Directions.JUMP;
-                this._spriteManager.setActualTexture(StaticEffectName.DOUBLEJUMP, this._positions);
+                this._spriteManager.setActualTexture(StaticEffectName.DOUBLEJUMP, this._body.Position);
                 return;
             }
 
             //gestion des entrés claviers
             if (state.IsKeyDown(Keys.Left)) { //déplacement à gauche
-                this._velocity.X = -3;
+                this._body.Velocity.X = -3;
                 this._spriteManager.effect = SpriteEffects.FlipHorizontally;
                 this._actualDirection = Directions.LEFT;
             } 
             else if (state.IsKeyDown(Keys.Right)) { // déplacement à droite
-                this._velocity.X = 3;
+                this._body.Velocity.X = 3;
                 this._spriteManager.effect = SpriteEffects.None;
                 this._actualDirection = Directions.RIGHT;
             }
             else { //aucune touche
                 this._actualDirection = Directions.NONE;
-                this._velocity.X = 0;
+                this._body.Velocity.X = 0;
             }
 
             if (this._isJumping)
@@ -188,6 +189,8 @@ namespace little_adventure.Sprites {
         /// <param name="lastDirection">précédente direction pour détecter les changement de directions</param>
         private void AnimationGestion(Directions lastDirection) {
             //gestion de l'animation
+
+            Debug.WriteLine(this._isFalling);
 
             if (this._actualDirection == Directions.JUMP) { //
                 this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);

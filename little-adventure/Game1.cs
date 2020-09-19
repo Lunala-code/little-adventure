@@ -6,9 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using tainicom.Aether.Physics2D.Common;
-using tainicom.Aether.Physics2D.Diagnostics;
-using tainicom.Aether.Physics2D.Dynamics;
 
 namespace little_adventure {
     /// <summary>

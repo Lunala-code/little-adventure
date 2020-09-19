@@ -33,10 +33,8 @@ D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\particules\dust\tile005.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\jump\tile000.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\mur.xnb
-D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Aether.Physics2D.dll
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\static\tile000.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\bgw.xnb
-D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Aether.Physics2D.Diagnostics.dll
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\falling\tile000.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\doubleump\tile000.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\doubleump\tile001.xnb
