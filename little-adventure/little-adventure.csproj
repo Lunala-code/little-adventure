@@ -42,9 +42,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Model\BodyType.cs" />
     <Compile Include="Model\CollisionsDirections.cs" />
     <Compile Include="Model\StaticEffectName.cs" />
     <Compile Include="Physics\Body.cs" />
+    <Compile Include="Physics\World.cs" />
     <Compile Include="Sprites\FinishedAnimation.cs" />
     <Compile Include="Sprites\NullAnimatedSprite.cs" />
     <Compile Include="Model\ParticuleAnimationName.cs" />

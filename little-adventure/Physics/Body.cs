@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using little_adventure.Model;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace little_adventure.Physics {
-    class Body {
+    public class Body {
 
         public Vector2 Velocity = Vector2.Zero;
         public Vector2 Position;
         private int _height;
         private int _width;
+        private BodyType _type;
 
         private bool _botCollision;
         private bool _topCollision;
@@ -24,6 +26,8 @@ namespace little_adventure.Physics {
         public bool LeftCollision { get { return this._leftCollision; } }
         public bool RightCollision { get { return this._rightCollision; } }
 
+        public BodyType Type { get { return this._type; } }
+
         public Rectangle Rectangle {
 
             get {
@@ -32,41 +36,69 @@ namespace little_adventure.Physics {
             }
         }
 
-        public Body(int heigth, int width, Vector2 position) {
+        /// <summary>
+        /// Constrcutor
+        /// </summary>
+        /// <param name="heigth">height of body</param>
+        /// <param name="width">width of body</param>
+        /// <param name="position">initial position of body</param>
+        public Body(int heigth, int width, Vector2 position, BodyType type) {
             this.Position = position;
             this._height = heigth;
             this._width = width;
+            this._type = type;
         }
 
+        /// <summary>
+        /// Apply force to the body to move it
+        /// </summary>
+        /// <param name="velocity"></param>
         public void applyForce(Vector2 velocity) {
             this.Velocity = velocity;
         }
 
-        public void Update() {
-            this.Position += this.Velocity;
+        public void preUpdate() {
             this._botCollision = false;
             this._topCollision = false;
             this._leftCollision = false;
             this._rightCollision = false;
         }
+        /// <summary>
+        /// Update velocity and collision var
+        /// </summary>
+        public void Update() {
+            this.Position += this.Velocity;
+            
+        }
 
+        /// <summary>
+        /// Get collision between this and another body
+        /// </summary>
+        /// <param name="body"></param>
         public void Collision(Body body) {
-                        
+            
 
-            this._botCollision |= this.IsTouchingTop(body);
-            this._topCollision |= this.IsTouchingBottom(body);
-            this._leftCollision |= this.IsTouchingRight(body);
-            this._rightCollision |= this.IsTouchingLeft(body);
-
-            Debug.WriteLineIf(this._rightCollision, "coucou");
-
-            if (this._botCollision)
+            /// compute the collision
+            bool bot = this.IsTouchingTop(body);
+            bool top = this.IsTouchingBottom(body);
+            bool left = this.IsTouchingRight(body);
+            bool right = this.IsTouchingLeft(body);
+            
+            /// velocity management
+            if (bot) {
                 this.Velocity.Y = 0;
-            if (this._topCollision)
+                this.Position.Y = body.Position.Y - this._height; //
+                    
+            }
+            if (top)
                 this.Velocity.Y = 1;
-            if ((this._leftCollision) || (this._rightCollision))
+            if (left || right)
                 this.Velocity.X = 0;
 
+            this._botCollision |= bot;
+            this._topCollision |= top;
+            this._leftCollision |= left;
+            this._rightCollision |= right;
             
         }
 

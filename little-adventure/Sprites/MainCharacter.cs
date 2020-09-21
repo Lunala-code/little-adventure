@@ -51,9 +51,9 @@ namespace little_adventure.Sprites {
         /// Load all texture of main character. 
         /// </summary>
         /// <param name="path">directory poth who contains texture</param>
-        public void LoadContent(string path, GraphicsDevice graphicsDevice, ContentManager content) {
+        public void LoadContent(string path, ContentManager content, World world) {
 
-            this._spriteManager = new SpriteManager(graphicsDevice);
+            this._spriteManager = new SpriteManager();
 
             this._spriteManager.addAnimation(PlayerAnimationName.STATIC, content, path + "/static/");
 
@@ -71,8 +71,9 @@ namespace little_adventure.Sprites {
             this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
             this._spriteManager.setActualTexture(StaticEffectName.NONE, Vector2.Zero);
 
-            this._body = new Body(this._spriteManager.NextSprite().Rectangle.Height, this._spriteManager.NextSprite().Rectangle.Width, this._positions);
-            this._body.Position = this._positions;
+            this._body = world.CreateBody(this._spriteManager.NextSprite().Rectangle.Height, 
+                this._spriteManager.NextSprite().Rectangle.Width, this._positions, BodyType.DYNAMIC);
+            //this._body.Position = this._positions;
 
         }
 
@@ -86,30 +87,20 @@ namespace little_adventure.Sprites {
             
             KeyboardGestion();
 
-            //this._velocity.Y += 0.15f;
-
-            //this._body.Position = this._positions;
-            //this._body.Velocity = this._velocity;
-
             //gestion des collisions
-            this._body.Velocity.Y += 0.15f;
+            //this._body.Velocity.Y += 0.15f;
             
             collisionManager(lv);
 
             //gestion de l'animation
             AnimationGestion(lastDirection);
-
-            this._body.Update();
+            
 
             //mise à jour des données
-            //this._positions += this._velocity;
             this._spriteManager.Position = this._body.Position;
-            //this._positions = this._body.Position;
-            //this._velocity = this._body.Velocity;
 
             this._spriteManager.Update(gameTime);
-
-            //Debug.WriteLine(this._actualDirection);
+            
 
         }
 
@@ -119,7 +110,7 @@ namespace little_adventure.Sprites {
         /// <param name="lv">niveau actuel</param>
         private void collisionManager(PlateformerSprite lv) {
 
-            lv.collision(this._body);
+            //lv.collision(this._body);
             
             if (this._body.BotCollision) { //collision su les pieds
                 if (this._isJumping || this._isFalling)
@@ -189,8 +180,7 @@ namespace little_adventure.Sprites {
         /// <param name="lastDirection">précédente direction pour détecter les changement de directions</param>
         private void AnimationGestion(Directions lastDirection) {
             //gestion de l'animation
-
-            Debug.WriteLine(this._isFalling);
+            
 
             if (this._actualDirection == Directions.JUMP) { //
                 this._spriteManager.setActualTexture(ParticuleAnimationName.NONE);
@@ -229,6 +219,8 @@ namespace little_adventure.Sprites {
         /// </summary>
         /// <param name="batch"></param>
         public void Draw(SpriteBatch batch) {
+
+            this._spriteManager.Position = this._body.Position;
 
             this._spriteManager.Draw(batch);
 

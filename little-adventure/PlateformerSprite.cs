@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using little_adventure.Sprites;
 using little_adventure.Physics;
+using little_adventure.Model;
 
 namespace little_adventure {
 
@@ -61,7 +62,7 @@ namespace little_adventure {
         /// Génère la carte des collisions
         /// </summary>
         /// <param name="graphicsDevice"></param>
-        public void getColisionMap(GraphicsDevice graphicsDevice) {
+        public void getColisionMap(World world) {
 
             this.collisionMap = new List<Body>();
             Body b;
@@ -76,7 +77,7 @@ namespace little_adventure {
                     this.platform.GetData(0, r, buffer, 0, 32 * 32);
 
                     if (!buffer.All(c => c == Color.Transparent)) {
-                        b = new Body(32, 32, new Vector2(r.X, r.Y));
+                        b = world.CreateBody(32, 32, new Vector2(r.X, r.Y), BodyType.STATIC);
                         this.collisionMap.Add(b);
                     }
                 }

@@ -34,7 +34,7 @@ namespace little_adventure {
         /// Constructor
         /// </summary>
         /// <param name="content">content manager for sprite loading</param>
-        public SpriteManager(GraphicsDevice graphicsDevice){
+        public SpriteManager(){
 
             this._sprites = new Dictionary<PlayerAnimationName, AnimatedSprite>();
             this._particules = new Dictionary<ParticuleAnimationName, AnimatedSprite>();

@@ -1,4 +1,5 @@
-﻿using little_adventure.Sprites;
+﻿using little_adventure.Physics;
+using little_adventure.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,12 +21,13 @@ namespace little_adventure {
         private MainCharacter _character;
         private Texture2D bg;
         private PlateformerSprite lvl1;
+        private World world;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
+            world = new World(new Vector2(0, 0.15f));
             graphics.PreferredBackBufferHeight = this._height;
             graphics.PreferredBackBufferWidth = this._width;
             _character = new MainCharacter(new Vector2(50, 200));
@@ -57,12 +59,12 @@ namespace little_adventure {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _character.LoadContent("./pinkCharacter", GraphicsDevice, Content);
+            _character.LoadContent("./pinkCharacter", Content, world);
 
 
             lvl1.loadTexture(Content);
 
-            lvl1.getColisionMap(GraphicsDevice);
+            lvl1.getColisionMap(world);
             
         }
 
@@ -90,6 +92,8 @@ namespace little_adventure {
             
 
             _character.Update(gameTime, lvl1);
+
+            world.Update();
 
             base.Update(gameTime);
         }
