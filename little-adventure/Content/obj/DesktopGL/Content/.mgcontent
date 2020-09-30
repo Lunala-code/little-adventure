@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/../../../../map/plateform.png</File>
     <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/bg.png</File>
     <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/bgw.png</File>
     <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/mur.png</File>
@@ -30,6 +31,7 @@
     <File>D:/Bureau/Info/Script info/monogame/firts game/little-adventure/little-adventure/Content/pinkCharacter/walk/tile005.png</File>
   </SourceFiles>
   <DestFiles>
+    <File>plateform.png</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

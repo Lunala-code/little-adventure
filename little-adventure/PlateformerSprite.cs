@@ -44,9 +44,7 @@ namespace little_adventure {
 
             this.tileCountHeight = this._height / this.tileHeight;
             this.tileCountWith = this._width / this.tileWidth;
-
-
-            this.collisionMap = new List<Body>();
+            
             
         }
 
@@ -63,9 +61,9 @@ namespace little_adventure {
         /// </summary>
         /// <param name="graphicsDevice"></param>
         public void getColisionMap(World world) {
-
-            this.collisionMap = new List<Body>();
-            Body b;
+            
+            
+            bool[,] col = new bool[tileCountHeight, tileCountWith];
 
             Rectangle r = new Rectangle(0, 0, 32, 32);
             Color[] buffer = new Color[32 * 32];
@@ -75,27 +73,43 @@ namespace little_adventure {
                     r.X = tileWidth * w;
                     r.Y = tileHeight * h;
                     this.platform.GetData(0, r, buffer, 0, 32 * 32);
-
-                    if (!buffer.All(c => c == Color.Transparent)) {
-                        b = world.CreateBody(32, 32, new Vector2(r.X, r.Y), BodyType.STATIC);
-                        this.collisionMap.Add(b);
-                    }
+                    col[h, w] = !buffer.All(c => c == Color.Transparent);
                 }
-                
+            }
+
+            bool le = true, ri = true, to = true, bo = true;
+
+            for (int h = 0; h < tileCountHeight; h++) {
+
+                for (int w = 0; w < tileCountWith; w++) {
+
+                    if (h - 1 > 0)
+                        to = col[h - 1, w];
+                    else
+                        to = true;
+                    
+                    if (h + 1 < tileCountHeight)
+                        bo = col[h + 1, w];
+                    else
+                        bo = true;
+
+                    if (w - 1 > 0)
+                        le = col[h, w - 1];
+                    else
+                        le = true;
+
+                    if (w + 1 < tileCountWith)
+                        ri = col[h, w + 1];
+                    else
+                        ri = true;
+
+                    if((!ri | !le | !to | !bo) & col[h, w])
+                        world.CreateBody(32, 32, new Vector2(tileWidth * w, tileHeight * h), BodyType.STATIC);
+                }
+
             }
 
         }
-
-        public void collision(Body body) {
-            foreach (var b in this.collisionMap) {
-                body.Collision(b);
-
-            }
-        }
-
-        
-
-
 
     }
 

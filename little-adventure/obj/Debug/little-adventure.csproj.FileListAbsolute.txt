@@ -41,3 +41,8 @@ D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\doubleump\tile002.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\doubleump\tile003.xnb
 D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\pinkCharacter\doubleump\tile004.xnb
+D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\little-adventure.exe.manifest
+D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\little-adventure.application
+D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\obj\Debug\little-adventure.exe.manifest
+D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\obj\Debug\little-adventure.application
+D:\Bureau\Info\Script info\monogame\firts game\little-adventure\little-adventure\bin\DesktopGL\AnyCPU\Debug\Content\plateform.xnb

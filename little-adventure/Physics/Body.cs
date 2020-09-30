@@ -54,7 +54,8 @@ namespace little_adventure.Physics {
         /// </summary>
         /// <param name="velocity"></param>
         public void applyForce(Vector2 velocity) {
-            this.Velocity = velocity;
+            this.Velocity.X = velocity.X;
+            this.Velocity.Y += velocity.Y;
         }
 
         public void preUpdate() {
@@ -68,6 +69,8 @@ namespace little_adventure.Physics {
         /// </summary>
         public void Update() {
             this.Position += this.Velocity;
+            if (this.Position.X < 0)
+                this.Position.X = 0;
             
         }
 

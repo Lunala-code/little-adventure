@@ -1,4 +1,5 @@
-﻿using little_adventure.Physics;
+﻿using little_adventure.Core;
+using little_adventure.Physics;
 using little_adventure.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,16 +23,19 @@ namespace little_adventure {
         private Texture2D bg;
         private PlateformerSprite lvl1;
         private World world;
+        private Camera cam;
+
+        public static int ScreenWidth;
+        public static int ScreenHeight;
+        public static int MaxHeight;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            world = new World(new Vector2(0, 0.15f));
-            graphics.PreferredBackBufferHeight = this._height;
-            graphics.PreferredBackBufferWidth = this._width;
-            _character = new MainCharacter(new Vector2(50, 200));
-            lvl1 = new PlateformerSprite("./bg");
+
+
+            
         }
 
         /// <summary>
@@ -43,6 +47,15 @@ namespace little_adventure {
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            world = new World(new Vector2(0, 0.15f));
+            graphics.PreferredBackBufferHeight = this._height;
+            graphics.PreferredBackBufferWidth = this._width;
+            _character = new MainCharacter(new Vector2(50, 200));
+            lvl1 = new PlateformerSprite("./plateform");
+
+            ScreenWidth = graphics.PreferredBackBufferWidth;
+            ScreenHeight = graphics.PreferredBackBufferHeight;
+            MaxHeight = lvl1.Height;
             
             base.Initialize();
 
@@ -95,6 +108,9 @@ namespace little_adventure {
 
             world.Update();
 
+            Camera.Instance.setFocalPoinst(_character.getPosition());
+            Camera.Instance.Update();
+
             base.Update(gameTime);
         }
 
@@ -106,7 +122,7 @@ namespace little_adventure {
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: Camera.Instance.viewMatrix);
 
             //spriteBatch.Draw(bg, Vector2.Zero, Color.White);
 

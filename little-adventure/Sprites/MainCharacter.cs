@@ -26,8 +26,10 @@ namespace little_adventure.Sprites {
         private bool _isDoubleJumping;
         private int _doubleJumpTempo;
         private bool _isFalling;
-        private Vector2 gravity;
         private Body _body;
+        private float _speed = 3f;
+        private float _jumpSpeed = -6f;
+        private float _jumpPosition = -20f;
 
         /// <summary>
         /// Constucte and initialize the class
@@ -44,7 +46,7 @@ namespace little_adventure.Sprites {
             this._isJumping = false;
             this._isFalling = false;
             this._wasFalling = false;
-            this.gravity = Vector2.Zero;
+
         }
 
         /// <summary>
@@ -86,11 +88,9 @@ namespace little_adventure.Sprites {
             var lastDirection = this._actualDirection;
             
             KeyboardGestion();
-
-            //gestion des collisions
-            //this._body.Velocity.Y += 0.15f;
             
-            collisionManager(lv);
+            
+            collisionManager();
 
             //gestion de l'animation
             AnimationGestion(lastDirection);
@@ -108,10 +108,8 @@ namespace little_adventure.Sprites {
         /// Gestion des collisions avec l'environnement
         /// </summary>
         /// <param name="lv">niveau actuel</param>
-        private void collisionManager(PlateformerSprite lv) {
-
-            //lv.collision(this._body);
-            
+        private void collisionManager() {
+                        
             if (this._body.BotCollision) { //collision su les pieds
                 if (this._isJumping || this._isFalling)
                     this._wasFalling = true;
@@ -137,18 +135,18 @@ namespace little_adventure.Sprites {
             var state = Keyboard.GetState();
 
             if (state.IsKeyDown(Keys.Space) && !this._isJumping) { //gestion du saut simple
-                this._body.Velocity.Y = -6f;
+                this._body.Velocity.Y = this._jumpSpeed;
                 this._isJumping = true;
-                this._body.Position.Y -= 20f;
+                this._body.Position.Y += this._jumpPosition;
                 this._actualDirection = Directions.JUMP;
                 this._doubleJumpTempo = 0;
                 return;
             }
 
             if (state.IsKeyDown(Keys.Space) && !this._isDoubleJumping && this._doubleJumpTempo > 34) {
-                this._body.Velocity.Y = -6f;
+                this._body.Velocity.Y = this._jumpSpeed;
                 this._isDoubleJumping = true;
-                this._body.Position.Y -= 20f;
+                this._body.Position.Y += this._jumpPosition;
                 this._actualDirection = Directions.JUMP;
                 this._spriteManager.setActualTexture(StaticEffectName.DOUBLEJUMP, this._body.Position);
                 return;
@@ -156,12 +154,12 @@ namespace little_adventure.Sprites {
 
             //gestion des entrés claviers
             if (state.IsKeyDown(Keys.Left)) { //déplacement à gauche
-                this._body.Velocity.X = -3;
+                this._body.Velocity.X = -this._speed;
                 this._spriteManager.effect = SpriteEffects.FlipHorizontally;
                 this._actualDirection = Directions.LEFT;
             } 
             else if (state.IsKeyDown(Keys.Right)) { // déplacement à droite
-                this._body.Velocity.X = 3;
+                this._body.Velocity.X = this._speed;
                 this._spriteManager.effect = SpriteEffects.None;
                 this._actualDirection = Directions.RIGHT;
             }
@@ -224,6 +222,10 @@ namespace little_adventure.Sprites {
 
             this._spriteManager.Draw(batch);
 
+        }
+
+        public Vector2 getPosition() {
+            return this._body.Position;
         }
 
     }
